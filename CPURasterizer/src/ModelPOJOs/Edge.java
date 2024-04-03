@@ -1,4 +1,4 @@
-package ObjectPOJOs;
+package ModelPOJOs;
 
 public class Edge {
     

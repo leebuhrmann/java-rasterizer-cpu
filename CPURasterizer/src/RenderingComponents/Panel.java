@@ -1,8 +1,6 @@
 package RenderingComponents;
 import javax.swing.JPanel;
 
-import ObjectPOJOs.Pixel;
-
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.awt.Color;

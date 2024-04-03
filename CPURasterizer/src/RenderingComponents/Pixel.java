@@ -1,4 +1,4 @@
-package ObjectPOJOs;
+package RenderingComponents;
 
 import java.awt.Color;
 

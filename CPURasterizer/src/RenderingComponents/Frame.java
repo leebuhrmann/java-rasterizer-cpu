@@ -3,8 +3,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import ObjectPOJOs.Pixel;
-
 public class Frame extends JFrame{
     
 private Panel panel;

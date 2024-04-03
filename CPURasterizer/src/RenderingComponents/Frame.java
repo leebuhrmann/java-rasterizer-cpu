@@ -1,3 +1,4 @@
+package RenderingComponents;
 import javax.swing.JFrame;
 
 public class Frame extends JFrame{
@@ -7,8 +8,10 @@ public class Frame extends JFrame{
         setSize(500,500);
         setLocationRelativeTo(null); // null tells this method to center the window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
-        Panel panel = new Panel();
+    public void addPanel(int width) {
+        Panel panel = new Panel(width);
         add(panel);
     }
 }

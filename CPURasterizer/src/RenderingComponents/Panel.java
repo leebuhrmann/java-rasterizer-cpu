@@ -1,24 +1,31 @@
+package RenderingComponents;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Color;
 
 public class Panel extends JPanel {
  
+    private int width;
+
+    public Panel(int width) {
+        this.width = width;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Color myColor = Color.RED; // Choose your color
+        Color color = Color.RED;
     
-        for (int x = 0; x < getWidth(); x++) {
+        for (int x = 0; x < width; x++) {
             int y = x; // Simple logic for a diagonal line
-            drawPixel(g, x, y, myColor);
+            drawPixel(g, x, y, color);
         }
     }
 
     private void drawPixel(Graphics g, int x, int y, Color color) {
         g.setColor(color);
-        g.drawLine(x, y, x, y); // Draws a line of length 0
+        g.drawLine(x, y, x, y);
     }
     
 }

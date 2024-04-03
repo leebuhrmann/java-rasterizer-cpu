@@ -21,7 +21,7 @@ public class App {
         
         // Fill buffer
         ArrayList<Pixel> buffer = new ArrayList();
-        for (int x = 0; x < 200; x++) {
+        for (int x = 0; x < frame.getWidth(); x++) {
             buffer.add(new Pixel(x, 25, Color.BLUE));
         }
 

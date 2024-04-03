@@ -1,31 +1,41 @@
 package RenderingComponents;
 import javax.swing.JPanel;
+
+import ObjectPOJOs.Pixel;
+
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.awt.Color;
 
 public class Panel extends JPanel {
  
-    private int width;
+    private ArrayList<Pixel> buffer;
 
-    public Panel(int width) {
-        this.width = width;
+    public Panel() {
+        this.buffer = new ArrayList();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawBuffer(g);
+    }
 
-        Color color = Color.RED;
-    
-        for (int x = 0; x < width; x++) {
-            int y = x; // Simple logic for a diagonal line
-            drawPixel(g, x, y, color);
+    private void drawBuffer(Graphics g) {
+        for (Pixel p : buffer) {
+            drawPixel(g, p);
         }
     }
 
-    private void drawPixel(Graphics g, int x, int y, Color color) {
-        g.setColor(color);
+    private void drawPixel(Graphics g, Pixel pixel) {
+        int x = pixel.getX();
+        int y = pixel.getY();
+        g.setColor(pixel.getColor());
         g.drawLine(x, y, x, y);
+    }
+
+    public void setBuffer(ArrayList<Pixel> buffer) {
+        this.buffer = buffer;
     }
     
 }

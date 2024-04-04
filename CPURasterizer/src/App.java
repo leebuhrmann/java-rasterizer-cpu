@@ -15,22 +15,26 @@ public class App {
 
         // Import blender obj model
         OBJParser modelParser = new OBJParser();
-        Model model = modelParser.loadModel("CPURasterizer/src/WavefrontFiles/cube.obj");
-        printModel(model.getTriangles());
+        Model model = modelParser.loadModel("src/WavefrontFiles/cube.obj");
+        printModel(model);
         // end import
         
         // Fill buffer
-        ArrayList<Pixel> buffer = new ArrayList();
-        for (int x = 0; x < frame.getWidth(); x++) {
-            buffer.add(new Pixel(x, 25, Color.BLUE));
-        }
+
+        ArrayList<Pixel> buffer = model.getPixels();
+
+        // ArrayList<Pixel> buffer = new ArrayList();
+        // for (int x = 0; x < frame.getWidth(); x++) {
+        //     buffer.add(new Pixel(x, 25, Color.BLUE));
+        // }
 
         frame.updatePanel(buffer);
     }
 
-    private static void printModel(ArrayList<Triangle> model) {
-        for (Triangle t : model) {
-            System.out.println(t.toString());
+    private static void printModel(Model model) {
+        ArrayList<Triangle> t = model.getTriangles();
+        for (int i = 0; i < t.size(); i++) {
+            System.out.printf("Triangle #%d: " + t.get(i).toString() + "\n", i);
         }
     }
 }

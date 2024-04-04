@@ -12,6 +12,10 @@ public class Triangle {
         this.three = three;
     }
 
+    public Point3[] getPoints() {
+        return new Point3[]{one,two,three};
+    }
+
     public String toString() {
         return String.format("one: (%f,%f), two: (%f,%f), three: (%f,%f)", 
                             one.getX(), one.getY(), two.getX(), two.getY(), three.getX(), three.getY());

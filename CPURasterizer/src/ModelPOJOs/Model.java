@@ -2,6 +2,8 @@ package ModelPOJOs;
 
 import java.util.ArrayList;
 
+import RenderingComponents.Pixel;
+
 public class Model {
     
     private ArrayList<Point3> vs;
@@ -21,7 +23,7 @@ public class Model {
     }
 
     public ArrayList<Point3> getVS() {
-        return vs;
+        return this.vs;
     }
 
     public void setVNS(ArrayList<Point3> vns) {
@@ -29,7 +31,7 @@ public class Model {
     }
 
     public ArrayList<Point3> getVNS() {
-        return vns;
+        return this.vns;
     }
 
     public void setVTS(ArrayList<Point2> vts) {
@@ -37,7 +39,7 @@ public class Model {
     }
 
     public ArrayList<Point2> getVTS() {
-        return vts;
+        return this.vts;
     }
 
     public void setTriangles(ArrayList<Triangle> t) {
@@ -45,6 +47,16 @@ public class Model {
     }
 
     public ArrayList<Triangle> getTriangles() {
-        return t;
+        return this.t;
+    }
+
+    public ArrayList<Pixel> getPixels() {
+        ArrayList<Pixel> pixels = new ArrayList<>();
+        for (Triangle tri : this.t) {
+            Point3[] points = tri.getPoints();
+
+            // more logic
+        }
+        return pixels;
     }
 }

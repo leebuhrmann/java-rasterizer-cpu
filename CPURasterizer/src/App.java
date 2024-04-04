@@ -16,7 +16,7 @@ public class App {
 
         // Import blender obj model
         OBJParser modelParser = new OBJParser();
-        Model model = modelParser.loadModel("CPURasterizer/src/WavefrontFiles/cube.obj");
+        Model model = modelParser.loadModel("src/WavefrontFiles/cube.obj");
         printModel(model);
         // end import.
         

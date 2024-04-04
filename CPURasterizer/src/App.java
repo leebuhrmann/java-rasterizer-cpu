@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.util.ArrayList;
 
 import ModelPOJOs.Model;
@@ -15,9 +14,9 @@ public class App {
 
         // Import blender obj model
         OBJParser modelParser = new OBJParser();
-        Model model = modelParser.loadModel("src/WavefrontFiles/cube.obj");
+        Model model = modelParser.loadModel("CPURasterizer/src/WavefrontFiles/cube.obj");
         printModel(model);
-        // end import
+        // end import.
         
         // Fill buffer
 

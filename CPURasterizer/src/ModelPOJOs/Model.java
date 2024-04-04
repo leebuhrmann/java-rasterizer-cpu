@@ -1,7 +1,6 @@
 package ModelPOJOs;
 
 import java.util.ArrayList;
-
 import RenderingComponents.Pixel;
 
 public class Model {
@@ -53,9 +52,7 @@ public class Model {
     public ArrayList<Pixel> getPixels() {
         ArrayList<Pixel> pixels = new ArrayList<>();
         for (Triangle tri : this.t) {
-            Point3[] points = tri.getPoints();
-
-            // more logic
+            pixels.addAll(tri.getPixels());
         }
         return pixels;
     }

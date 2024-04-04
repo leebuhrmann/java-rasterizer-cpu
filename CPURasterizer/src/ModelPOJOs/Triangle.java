@@ -1,5 +1,8 @@
 package ModelPOJOs;
 
+import RenderingComponents.Pixel;
+import java.util.ArrayList;
+
 public class Triangle {
     
     private Point3 one;
@@ -14,6 +17,14 @@ public class Triangle {
 
     public Point3[] getPoints() {
         return new Point3[]{one,two,three};
+    }
+
+    public ArrayList<Pixel> getPixels() {
+        ArrayList<Pixel> pixels = new ArrayList<>();
+        pixels.addAll(new Edge(one,two).getPixels());
+        pixels.addAll(new Edge(two,three).getPixels());
+        pixels.addAll(new Edge(three,one).getPixels());
+        return pixels;
     }
 
     public String toString() {

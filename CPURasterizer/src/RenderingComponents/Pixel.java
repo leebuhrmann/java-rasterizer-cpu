@@ -37,4 +37,8 @@ public class Pixel {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public String toString() {
+        return String.format("p(%d,%d)", this.x, this.y);
+    }
 }

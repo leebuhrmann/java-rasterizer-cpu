@@ -16,13 +16,14 @@ public class App {
 
         // Import blender obj model
         OBJParser modelParser = new OBJParser();
-        Model model = modelParser.loadModel("src/WavefrontFiles/cube.obj");
+        Model model = modelParser.loadModel("CPURasterizer/src/WavefrontFiles/cube.obj");
+        Model scaledModel = model.scaleModel(50);
         printModel(model);
+        printModel(scaledModel);
         // end import.
         
         // Fill buffer
-
-        ArrayList<Pixel> buffer = model.getPixels();
+        ArrayList<Pixel> buffer = scaledModel.getPixels(); 
 
         // test shape pojos getPixels
         // ArrayList<Pixel> buffer = new ArrayList<>();

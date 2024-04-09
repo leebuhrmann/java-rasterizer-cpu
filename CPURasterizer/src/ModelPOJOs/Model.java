@@ -56,4 +56,26 @@ public class Model {
         }
         return pixels;
     }
+
+    public Model scaleModel(int scale) {
+        ArrayList<Point3> scaledVs = new ArrayList<>();
+        ArrayList<Point3> scaledVns = new ArrayList<>();
+        ArrayList<Point2> scaledVts = new ArrayList<>();
+        ArrayList<Triangle> scaledT = new ArrayList<>();
+
+        for (Point3 v : this.vs) {
+            scaledVs.add(v.scalePoint3(scale));
+        }
+        for (Point3 vn : this.vns) {
+            scaledVns.add(vn.scalePoint3(scale));
+        }
+        for (Point2 vt : this.vts) {
+            scaledVts.add(vt.scalePoint2(scale));
+        }
+        for (Triangle t : this.t) {
+            scaledT.add(t.scaleTriangle(scale));
+        }
+
+        return new Model(scaledVs, scaledVns, scaledVts, scaledT);
+    }
 }

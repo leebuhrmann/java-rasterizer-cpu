@@ -28,11 +28,15 @@ public class Point3 {
         this.y = y;
     }
 
-    public int getZ() {
+    public float getZ() {
         return this.z;
     }
 
     public void setZ(int z) {
         this.z = z;
+    }
+
+    public Point3 scalePoint3(int scale) {
+        return new Point3(this.x * scale, this.y * scale, this.z * scale);
     }
 }

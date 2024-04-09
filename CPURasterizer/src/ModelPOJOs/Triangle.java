@@ -31,4 +31,8 @@ public class Triangle {
         return String.format("one: (%f,%f), two: (%f,%f), three: (%f,%f)", 
                             one.getX(), one.getY(), two.getX(), two.getY(), three.getX(), three.getY());
     }
+
+    public Triangle scaleTriangle(int scale) {
+        return new Triangle(one.scalePoint3(scale), two.scalePoint3(scale), three.scalePoint3(scale));
+    }
 }

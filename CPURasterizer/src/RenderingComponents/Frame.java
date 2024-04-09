@@ -18,7 +18,18 @@ private Panel panel;
     }
 
     public void updatePanel(ArrayList<Pixel> buffer) {
+        buffer = center(buffer); 
         panel.setBuffer(buffer);
         panel.repaint();
+    }
+
+    private ArrayList<Pixel> center(ArrayList<Pixel> buffer) {
+        ArrayList<Pixel> centeredBuffer = new ArrayList<>();
+        int shiftX = Math.round(this.getWidth() / 2);
+        int shiftY = Math.round(this.getHeight() / 2);
+        for (Pixel p : buffer) {
+            centeredBuffer.add(new Pixel(p.getX() + shiftX, p.getY() + shiftY, p.getColor()));
+        }
+        return centeredBuffer;
     }
 }

@@ -25,4 +25,8 @@ public class Point2 {
     public void setY(float y) {
         this.y = y;
     }
+
+    public Point2 scalePoint2(int scale) {
+        return new Point2(this.x * scale, this.y * scale);
+    }
 }

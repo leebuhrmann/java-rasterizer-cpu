@@ -39,6 +39,6 @@ public class Pixel {
     }
 
     public String toString() {
-        return String.format("p(%d,%d)", this.x, this.y);
+        return String.format("%s(%d,%d)", this.color, this.x, this.y);
     }
 }

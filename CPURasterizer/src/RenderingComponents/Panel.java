@@ -3,7 +3,6 @@ import javax.swing.JPanel;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.awt.Color;
 
 public class Panel extends JPanel {
  

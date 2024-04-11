@@ -47,6 +47,7 @@ public class OBJParser {
                 t.add(new Triangle(points[0], points[1], points[2]));
             }
         }
+        reader.close();
 
         return new Model(vs, vns, vts, t);
     }

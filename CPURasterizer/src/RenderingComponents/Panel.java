@@ -9,7 +9,7 @@ public class Panel extends JPanel {
     private ArrayList<Pixel> buffer;
 
     public Panel() {
-        this.buffer = new ArrayList();
+        this.buffer = new ArrayList<Pixel>();
     }
 
     @Override

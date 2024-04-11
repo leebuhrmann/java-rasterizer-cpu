@@ -34,5 +34,9 @@ public class Panel extends JPanel {
     public void setBuffer(ArrayList<Pixel> buffer) {
         this.buffer = buffer;
     }
+
+    public ArrayList<Pixel> getBuffer() {
+        return this.buffer;
+    }
     
 }

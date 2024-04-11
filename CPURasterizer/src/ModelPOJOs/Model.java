@@ -78,4 +78,12 @@ public class Model {
 
         return new Model(scaledVs, scaledVns, scaledVts, scaledT);
     }
+
+    // TODO
+    // public String toString() {
+    //     ArrayList<Triangle> t = model.getTriangles();
+    //     for (int i = 0; i < t.size(); i++) {
+    //         System.out.printf("Triangle #%d: " + t.get(i).toString() + "\n", i);
+    //     }
+    // }
 }

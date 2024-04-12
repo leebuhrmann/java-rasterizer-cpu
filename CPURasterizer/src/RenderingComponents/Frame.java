@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import ModelPOJOs.Model;
+import ModelPOJOs.Point3;
+import ModelPOJOs.Triangle;
 
 import javax.swing.JFrame;
 
@@ -34,32 +36,60 @@ private Panel panel;
         add(panel);
     }
 
+    // public void render(Model model) {
+    //     this.model = model;
+    //     center();
+    //     panel.setBuffer(this.model.getPixels());
+    //     Timer timer = new Timer(16, e -> {
+    //         panel.repaint();
+    //         tick++;
+    //         // System.out.println("tick: " + tick);
+    //     });
+    //     timer.start();
+    // }
+
     public void render(Model model) {
         this.model = model;
-        panel.setBuffer(center(this.model.getPixels()));
+        center();
         Timer timer = new Timer(16, e -> {
-            // this.buffer = panel.getBuffer();
-            // if (animate) rotate();
-            // if (perspective) perspective();
-            // if (backFaceCulling) backFaceCulling(); 
+            panel.setBuffer(prepareBuffer());
             panel.repaint();
             tick++;
+            // System.out.println("tick: " + tick);
         });
         timer.start();
     }
 
-    private void prepareBuffer() {
-        
+    private ArrayList<Pixel> prepareBuffer() {
+            // get triangle
+            // if (animate) rotate();
+            // if (perspective) perspective();
+            // if (backFaceCulling) backFaceCulling(); 
+            // insert into buffer
+
+            ArrayList<Pixel> buffer = new ArrayList<>();
+
+            for (Triangle t : this.model.getTriangles()) {
+                Point3 twoOne = t.getTwo().getSubtract(t.getOne());
+                Point3 threeOne = t.getThree().getSubtract(t.getOne());
+                Point3 cross = twoOne.getCross(threeOne);
+                Point3 normal = cross.getNormalized();
+
+                if (backFaceCulling && normal.getZ() < 0) {
+                    continue;
+                }
+
+                buffer.addAll(t.getPixels());
+            }
+
+            return buffer;
     }
 
-    private ArrayList<Pixel> center(ArrayList<Pixel> buffer) {
-        ArrayList<Pixel> centeredBuffer = new ArrayList<>();
+    private void center() {
         int shiftX = Math.round(this.getWidth() / 2);
         int shiftY = Math.round(this.getHeight() / 2);
-        for (Pixel p : buffer) {
-            centeredBuffer.add(new Pixel(p.getX() + shiftX, p.getY() + shiftY, p.getColor()));
-        }
-        return centeredBuffer;
+        this.model.shiftX(shiftX);
+        this.model.shiftY(shiftY);
     }
 
     private void rotate() {

@@ -15,6 +15,30 @@ public class Triangle {
         this.three = three;
     }
 
+    public Point3 getOne() {
+        return this.one;
+    }
+    
+    public void setOne(Point3 one) {
+        this.one = one;
+    }
+
+    public Point3 getTwo() {
+        return this.two;
+    }
+
+    public void settwo(Point3 two) {
+        this.two = two;
+    }
+
+    public Point3 getThree() {
+        return this.three;
+    }
+
+    public void setThree(Point3 three) {
+        this.three = three;
+    }
+
     public Point3[] getPoints() {
         return new Point3[]{one,two,three};
     }

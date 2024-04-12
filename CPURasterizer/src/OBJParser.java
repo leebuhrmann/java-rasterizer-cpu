@@ -6,20 +6,19 @@ import java.util.ArrayList;
 import ModelPOJOs.Model;
 import ModelPOJOs.Point2;
 import ModelPOJOs.Point3;
-import ModelPOJOs.Triangle;
 
 public class OBJParser {
     
     private ArrayList<Point3> vs;
     private ArrayList<Point3> vns;
     private ArrayList<Point2> vts;
-    private ArrayList<Triangle> t;
+    private ArrayList<int[][]> f;
 
     public OBJParser() {
         this.vs = new ArrayList<>();
         this.vns = new ArrayList<>();
         this.vts = new ArrayList<>();
-        this.t = new ArrayList<>();
+        this.f = new ArrayList<int[][]>();
     }
 
     public Model loadModel(String filePath) throws IOException {
@@ -38,17 +37,21 @@ public class OBJParser {
                 vts.add(new Point2(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2])));
             }
             else if (tokens[0].equals("f")) {
-                Point3[] points = new Point3[3];
+                int[][] fData = new int[3][3];
                 for (int i = 0; i < 3; i++) {
+                    int[] fTuple = new int[3];
                     String[] split = tokens[i + 1].split("/");
-                    points[i] = vs.get(Integer.parseInt(split[0]) - 1);
+                    fTuple[0] = Integer.parseInt(split[0]);
+                    fTuple[1] = Integer.parseInt(split[1]);
+                    fTuple[2] = Integer.parseInt(split[2]);
+                    fData[i] = fTuple;
                 }
-
-                t.add(new Triangle(points[0], points[1], points[2]));
+                // System.out.printf("fData: [%d,%d,%d],[%d,%d,%d],[%d,%d,%d]\n", fData[0][0], fData[0][1], fData[0][2], fData[1][0], fData[1][1], fData[1][2], fData[2][0], fData[2][1], fData[2][2]);
+                f.add(fData);
             }
         }
         reader.close();
 
-        return new Model(vs, vns, vts, t);
+        return new Model(vs, vns, vts, f);
     }
 }

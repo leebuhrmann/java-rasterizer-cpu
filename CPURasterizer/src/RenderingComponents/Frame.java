@@ -4,7 +4,6 @@ import javax.swing.Timer;
 
 import ModelPOJOs.Edge;
 import ModelPOJOs.Model;
-import ModelPOJOs.Point2;
 import ModelPOJOs.Point3;
 import ModelPOJOs.Triangle;
 
@@ -57,13 +56,12 @@ private Panel panel;
             panel.setBuffer(prepareBuffer());
             panel.repaint();
             this.tick++;
-            System.out.println("tick: " + tick);
+            // System.out.println("tick: " + tick);
         });
         timer.start();
     }
 
     private ArrayList<Pixel> prepareBuffer() {
-            System.out.println("Enter prepareBuffer");
             ArrayList<Pixel> buffer = new ArrayList<>();
 
             for (Triangle t : this.model.getTriangles()) {
@@ -87,9 +85,29 @@ private Panel panel;
                     three.setZ(out[1]);
                 }
 
+                float cameraFromZ = (this.getWidth() / 2) + (this.getWidth() / 8) + 5;
+                float cameraToZ = (this.getWidth() / 8) + 5;
+                float cameraLengthZ = cameraFromZ - cameraToZ;
 
+                ArrayList<Point3> points = new ArrayList<>();
+                points.add(one);
+                points.add(two);
+                points.add(three);
                 if (perspective) {
+                    float _bw = this.getWidth() / 2;
+                    for (Point3 p : points) {
+                        float distanceZ = cameraFromZ - p.getZ();
 
+                        float offsetX = p.getX() - _bw;
+                        float ratioX = offsetX / distanceZ;
+                        float newValueX = ratioX * cameraLengthZ;
+                        p.setX(newValueX + _bw);
+
+                        float offsetY = p.getY() - _bw;
+                        float ratioY = offsetY / distanceZ;
+                        float newValueY = ratioY * cameraLengthZ;
+                        p.setY(newValueY + _bw);
+                    }
                 }
 
                 Point3 twoOne = two.getSubtract(one);
@@ -125,7 +143,6 @@ private Panel panel;
         float _angle = _tan + angle;
         float _x2 = (float)Math.cos(_angle) * _r;
         float _y2 = (float)Math.sin(_angle) * _r;
-        System.out.printf("x: %f | y: %f | angle: %f | x2: %f | y2: %f\n", x, y, angle, _x2, _y2);
         return new float[]{_x2 + _bw, _y2};
     }
 }

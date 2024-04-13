@@ -57,12 +57,13 @@ private Panel panel;
             panel.setBuffer(prepareBuffer());
             panel.repaint();
             this.tick++;
-            // System.out.println("tick: " + tick);
+            System.out.println("tick: " + tick);
         });
         timer.start();
     }
 
     private ArrayList<Pixel> prepareBuffer() {
+            System.out.println("Enter prepareBuffer");
             ArrayList<Pixel> buffer = new ArrayList<>();
 
             for (Triangle t : this.model.getTriangles()) {
@@ -71,7 +72,7 @@ private Panel panel;
                 Point3 three = t.getThree().clone();
 
                 if (animate) {
-                    float angle = tick / 10;
+                    float angle = (float)tick / 10;
 
                     float[] out = rotate(one.getX(), one.getZ(), angle);
                     one.setX(out[0]);
@@ -84,6 +85,11 @@ private Panel panel;
                     out = rotate(three.getX(), three.getZ(), angle);
                     three.setX(out[0]);
                     three.setZ(out[1]);
+                }
+
+
+                if (perspective) {
+
                 }
 
                 Point3 twoOne = two.getSubtract(one);
@@ -112,9 +118,10 @@ private Panel panel;
 
     private float[] rotate(float x, float y, float angle) {
         float _bw = this.getWidth() / 2;
+        float _y = y;
         float _x = x - _bw;
-        float _r = (float)Math.sqrt(Math.pow(_x,2) + Math.pow(y,2));
-        float _tan = (float)Math.atan2(y,_x);
+        float _r = (float)Math.sqrt(Math.pow(_x,2) + Math.pow(_y,2));
+        float _tan = (float)Math.atan2(_y,_x);
         float _angle = _tan + angle;
         float _x2 = (float)Math.cos(_angle) * _r;
         float _y2 = (float)Math.sin(_angle) * _r;

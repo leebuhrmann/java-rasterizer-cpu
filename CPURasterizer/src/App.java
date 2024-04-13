@@ -4,7 +4,7 @@ import RenderingComponents.Frame;
 public class App {
     public static void main(String[] args) throws Exception {
         // Create window
-        Frame frame = new Frame(false, true, false);
+        Frame frame = new Frame(true, true, false);
         frame.setVisible(true);
         // end create window
 

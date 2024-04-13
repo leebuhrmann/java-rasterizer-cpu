@@ -2,7 +2,9 @@ package RenderingComponents;
 import java.util.ArrayList;
 import javax.swing.Timer;
 
+import ModelPOJOs.Edge;
 import ModelPOJOs.Model;
+import ModelPOJOs.Point2;
 import ModelPOJOs.Point3;
 import ModelPOJOs.Triangle;
 
@@ -54,24 +56,38 @@ private Panel panel;
         Timer timer = new Timer(16, e -> {
             panel.setBuffer(prepareBuffer());
             panel.repaint();
-            tick++;
+            this.tick++;
             // System.out.println("tick: " + tick);
         });
         timer.start();
     }
 
     private ArrayList<Pixel> prepareBuffer() {
-            // get triangle
-            // if (animate) rotate();
-            // if (perspective) perspective();
-            // if (backFaceCulling) backFaceCulling(); 
-            // insert into buffer
-
             ArrayList<Pixel> buffer = new ArrayList<>();
 
             for (Triangle t : this.model.getTriangles()) {
-                Point3 twoOne = t.getTwo().getSubtract(t.getOne());
-                Point3 threeOne = t.getThree().getSubtract(t.getOne());
+                Point3 one = t.getOne().clone();
+                Point3 two = t.getTwo().clone();
+                Point3 three = t.getThree().clone();
+
+                if (animate) {
+                    float angle = tick / 10;
+
+                    float[] out = rotate(one.getX(), one.getZ(), angle);
+                    one.setX(out[0]);
+                    one.setZ(out[1]);
+          
+                    out = rotate(two.getX(), two.getZ(), angle);
+                    two.setX(out[0]);
+                    two.setZ(out[1]);
+          
+                    out = rotate(three.getX(), three.getZ(), angle);
+                    three.setX(out[0]);
+                    three.setZ(out[1]);
+                }
+
+                Point3 twoOne = two.getSubtract(one);
+                Point3 threeOne = three.getSubtract(one);
                 Point3 cross = twoOne.getCross(threeOne);
                 Point3 normal = cross.getNormalized();
 
@@ -79,7 +95,9 @@ private Panel panel;
                     continue;
                 }
 
-                buffer.addAll(t.getPixels());
+                buffer.addAll(new Edge(one,two).getPixels());
+                buffer.addAll(new Edge(two,three).getPixels());
+                buffer.addAll(new Edge(three,one).getPixels());
             }
 
             return buffer;
@@ -92,7 +110,15 @@ private Panel panel;
         this.model.shiftY(shiftY);
     }
 
-    private void rotate() {
-
+    private float[] rotate(float x, float y, float angle) {
+        float _bw = this.getWidth() / 2;
+        float _x = x - _bw;
+        float _r = (float)Math.sqrt(Math.pow(_x,2) + Math.pow(y,2));
+        float _tan = (float)Math.atan2(y,_x);
+        float _angle = _tan + angle;
+        float _x2 = (float)Math.cos(_angle) * _r;
+        float _y2 = (float)Math.sin(_angle) * _r;
+        System.out.printf("x: %f | y: %f | angle: %f | x2: %f | y2: %f\n", x, y, angle, _x2, _y2);
+        return new float[]{_x2 + _bw, _y2};
     }
 }

@@ -32,7 +32,7 @@ public class Point3 {
         return this.z;
     }
 
-    public void setZ(int z) {
+    public void setZ(float z) {
         this.z = z;
     }
 
@@ -62,5 +62,9 @@ public class Point3 {
     public Point3 getNormalized() {
         double length = getLength();
         return new Point3((float)(this.x / length), (float)(this.y / length), (float)(this.z / length));
+    }
+
+    public Point3 clone() {
+        return new Point3(this.x, this.y, this.z);
     }
 }

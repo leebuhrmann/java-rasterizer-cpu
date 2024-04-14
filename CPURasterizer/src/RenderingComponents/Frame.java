@@ -128,6 +128,8 @@ private Panel panel;
                 buffer.addAll(new Edge(two,three).getPixels());
                 buffer.addAll(new Edge(three,one).getPixels());
 
+
+                // add color to faces
                 int minY = buffer.stream()
                                     .min(Comparator.comparing(Pixel::getY))
                                     .orElseThrow(NoSuchElementException::new)
@@ -156,6 +158,7 @@ private Panel panel;
                         buffer.add(new Pixel(x,y,Color.BLUE));
                     }
                 }
+                //end add color
             }
 
             return buffer;

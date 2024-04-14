@@ -1,5 +1,10 @@
 package RenderingComponents;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 import javax.swing.Timer;
 
 import ModelPOJOs.Edge;
@@ -52,7 +57,7 @@ private Panel panel;
     public void render(Model model) {
         this.model = model;
         center();
-        Timer timer = new Timer(16, e -> {
+        Timer timer = new Timer(64, e -> {
             panel.setBuffer(prepareBuffer());
             panel.repaint();
             this.tick++;
@@ -70,7 +75,7 @@ private Panel panel;
                 Point3 three = t.getThree().clone();
 
                 if (animate) {
-                    float angle = (float)tick / 10;
+                    float angle = (float)tick / 20;
 
                     float[] out = rotate(one.getX(), one.getZ(), angle);
                     one.setX(out[0]);
@@ -122,6 +127,35 @@ private Panel panel;
                 buffer.addAll(new Edge(one,two).getPixels());
                 buffer.addAll(new Edge(two,three).getPixels());
                 buffer.addAll(new Edge(three,one).getPixels());
+
+                int minY = buffer.stream()
+                                    .min(Comparator.comparing(Pixel::getY))
+                                    .orElseThrow(NoSuchElementException::new)
+                                    .getY();
+                int maxY = buffer.stream()
+                                    .max(Comparator.comparing(Pixel::getY))
+                                    .orElseThrow(NoSuchElementException::new)
+                                    .getY();
+
+                for (int y = minY; y < maxY; y++) {
+                    final int finalY = y;
+                    ArrayList<Pixel> _buffer = buffer.stream()
+                                                        .filter(pixel -> pixel.getY() == finalY)
+                                                        .collect(Collectors.toCollection(ArrayList::new));
+
+                    int minX = _buffer.stream()
+                                        .min(Comparator.comparing(Pixel::getX))
+                                        .orElseThrow(NoSuchElementException::new)
+                                        .getX();
+                    int maxX = _buffer.stream()
+                                        .max(Comparator.comparing(Pixel::getX))
+                                        .orElseThrow(NoSuchElementException::new)
+                                        .getX();     
+                                        
+                    for (int x = minX; x < maxX; x++) {
+                        buffer.add(new Pixel(x,y,Color.BLUE));
+                    }
+                }
             }
 
             return buffer;

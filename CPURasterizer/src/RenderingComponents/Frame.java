@@ -23,9 +23,10 @@ private Panel panel;
     private boolean animate;
     private boolean backFaceCulling;
     private boolean perspective;
+    private boolean color;
     private int tick;
 
-    public Frame(boolean animate, boolean backFaceCulling, boolean perspective) {
+    public Frame(boolean animate, boolean backFaceCulling, boolean perspective, boolean color) {
         setTitle("Lee's Rasterizer");
         setSize(500,500);
         setLocationRelativeTo(null); // null tells this method to center the window
@@ -37,6 +38,7 @@ private Panel panel;
         this.animate = animate;
         this.backFaceCulling = backFaceCulling;
         this.perspective = perspective;
+        this.color = color;
 
         panel = new Panel();
         add(panel);
@@ -57,7 +59,7 @@ private Panel panel;
     public void render(Model model) {
         this.model = model;
         center();
-        Timer timer = new Timer(64, e -> {
+        Timer timer = new Timer(1000, e -> {
             panel.setBuffer(prepareBuffer());
             panel.repaint();
             this.tick++;
@@ -130,32 +132,34 @@ private Panel panel;
 
 
                 // add color to faces
-                int minY = buffer.stream()
-                                    .min(Comparator.comparing(Pixel::getY))
-                                    .orElseThrow(NoSuchElementException::new)
-                                    .getY();
-                int maxY = buffer.stream()
-                                    .max(Comparator.comparing(Pixel::getY))
-                                    .orElseThrow(NoSuchElementException::new)
-                                    .getY();
-
-                for (int y = minY; y < maxY; y++) {
-                    final int finalY = y;
-                    ArrayList<Pixel> _buffer = buffer.stream()
-                                                        .filter(pixel -> pixel.getY() == finalY)
-                                                        .collect(Collectors.toCollection(ArrayList::new));
-
-                    int minX = _buffer.stream()
-                                        .min(Comparator.comparing(Pixel::getX))
+                if (color) {
+                    int minY = buffer.stream()
+                                        .min(Comparator.comparing(Pixel::getY))
                                         .orElseThrow(NoSuchElementException::new)
-                                        .getX();
-                    int maxX = _buffer.stream()
-                                        .max(Comparator.comparing(Pixel::getX))
+                                        .getY();
+                    int maxY = buffer.stream()
+                                        .max(Comparator.comparing(Pixel::getY))
                                         .orElseThrow(NoSuchElementException::new)
-                                        .getX();     
-                                        
-                    for (int x = minX; x < maxX; x++) {
-                        buffer.add(new Pixel(x,y,Color.BLUE));
+                                        .getY();
+
+                    for (int y = minY; y < maxY; y++) {
+                        final int finalY = y;
+                        ArrayList<Pixel> _buffer = buffer.stream()
+                                                            .filter(pixel -> pixel.getY() == finalY)
+                                                            .collect(Collectors.toCollection(ArrayList::new));
+
+                        int minX = _buffer.stream()
+                                            .min(Comparator.comparing(Pixel::getX))
+                                            .orElseThrow(NoSuchElementException::new)
+                                            .getX();
+                        int maxX = _buffer.stream()
+                                            .max(Comparator.comparing(Pixel::getX))
+                                            .orElseThrow(NoSuchElementException::new)
+                                            .getX();     
+                                            
+                        for (int x = minX; x < maxX; x++) {
+                            buffer.add(new Pixel(x,y,Color.BLUE));
+                        }
                     }
                 }
                 //end add color

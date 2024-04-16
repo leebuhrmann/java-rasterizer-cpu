@@ -30,7 +30,7 @@ public class Panel extends JPanel {
         int y = pixel.getY();
         Color color = new Color(pixel.getR(), pixel.getG(), pixel.getB());
         g.setColor(color);
-        g.drawLine(x, y, x, y);
+        g.fillRect(x, y, 1,1);
     }
 
     public void setBuffer(ArrayList<Pixel> buffer) {

@@ -44,34 +44,31 @@ private Panel panel;
         add(panel);
     }
 
+    public void render(ArrayList<Pixel> buffer) {
+        panel.setBuffer(buffer);
+        panel.repaint();
+    }
+
     // public void render(Model model) {
     //     this.model = model;
     //     center();
-    //     panel.setBuffer(this.model.getPixels());
     //     Timer timer = new Timer(16, e -> {
+    //         ArrayList<Pixel> buffer = prepareBuffer();
+    //         panel.setBuffer(buffer);
+    //         System.out.printf("\nbuffer: %s\n", buffer);
     //         panel.repaint();
-    //         tick++;
+    //         this.tick++;
     //         // System.out.println("tick: " + tick);
     //     });
     //     timer.start();
     // }
 
-    public void render(Model model) {
-        this.model = model;
-        center();
-        Timer timer = new Timer(16, e -> {
-            panel.setBuffer(prepareBuffer());
-            panel.repaint();
-            this.tick++;
-            // System.out.println("tick: " + tick);
-        });
-        timer.start();
-    }
-
     private ArrayList<Pixel> prepareBuffer() {
+            System.out.println("\nprepareBuffer");
             ArrayList<Pixel> buffer = new ArrayList<>();
 
             for (Triangle t : this.model.getTriangles()) {
+                System.out.println("##################### Triangle ########################");
                 Point3 one = t.getOne().clone();
                 Point3 two = t.getTwo().clone();
                 Point3 three = t.getThree().clone();
@@ -131,6 +128,32 @@ private Panel panel;
                 buffer.addAll(new Edge(two,three).getPixels());
                 buffer.addAll(new Edge(three,one).getPixels());
 
+                Point3 toSun = new Point3(1,0,1).getNormalized();
+                float diffuse = normal.getDot(toSun);
+                System.out.printf("diffuse1: %f\n", diffuse);
+                diffuse = Math.max(0,diffuse);
+                System.out.printf("diffuse2: %f\n", diffuse);
+
+                float r = 255;
+                float g = 255;
+                float b = 255;
+
+                r *= diffuse;
+                g *= diffuse;
+                b *= diffuse;
+                System.out.printf("(r,g,b)1: (%f,%f,%f)\n", r,g,b);
+
+                int ambient = 50;
+                r += ambient;
+                g += ambient;
+                b += ambient;
+                System.out.printf("(r,g,b)2: (%f,%f,%f)\n", r,g,b);
+
+                r = Math.max(0, Math.min(255, r));
+                g = Math.max(0, Math.min(255, g));
+                b = Math.max(0, Math.min(255, b));
+                System.out.printf("(r,g,b)3: (%f,%f,%f)\n", r,g,b);
+
                 if (color) {
                     int minY = buffer.stream()
                                         .min(Comparator.comparing(Pixel::getY))
@@ -157,27 +180,7 @@ private Panel panel;
                                             .getX();     
                                             
                         for (int x = minX; x <= maxX; x++) {
-                            Point3 toSun = new Point3(1,0,1).getNormalized();
-                            float diffuse = normal.getDot(toSun);
-                            diffuse = Math.max(0,diffuse);
-                            int r = 255;
-                            int g = 255;
-                            int b = 255;
-
-                            r *= diffuse;
-                            g *= diffuse;
-                            b *= diffuse;
-
-                            int ambient = 50;
-                            r += ambient;
-                            g += ambient;
-                            b += ambient;
-
-                            r = Math.max(0, Math.min(255, r));
-                            g = Math.max(0, Math.min(255, g));
-                            b = Math.max(0, Math.min(255, b));
-
-                            buffer.add(new Pixel(x,y,r,g,b));
+                            buffer.add(new Pixel(x,y,Math.round(r),Math.round(g),Math.round(b)));
                         }
                     }
                 }

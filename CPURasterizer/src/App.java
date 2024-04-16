@@ -13,7 +13,7 @@ public class App {
         Model model = modelParser.loadModel("src/WavefrontFiles/cube.obj");
         // Model model = modelParser.loadModel("src/WavefrontFiles/untitled.obj");
         // Model model = modelParser.loadModel("src/WavefrontFiles/star.obj");
-        model.scaleModel(100);
+        model.scaleModel(50);
         // end import.
         
         // Render

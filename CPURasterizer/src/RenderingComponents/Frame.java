@@ -141,7 +141,7 @@ private Panel panel;
                                         .orElseThrow(NoSuchElementException::new)
                                         .getY();
 
-                    for (int y = minY; y < maxY; y++) {
+                    for (int y = minY; y <= maxY; y++) {
                         final int finalY = y;
                         ArrayList<Pixel> _buffer = buffer.stream()
                                                             .filter(pixel -> pixel.getY() == finalY)
@@ -156,7 +156,7 @@ private Panel panel;
                                             .orElseThrow(NoSuchElementException::new)
                                             .getX();     
                                             
-                        for (int x = minX; x < maxX; x++) {
+                        for (int x = minX; x <= maxX; x++) {
                             Point3 toSun = new Point3(1,0,1).getNormalized();
                             float diffuse = normal.getDot(toSun);
                             diffuse = Math.max(0,diffuse);

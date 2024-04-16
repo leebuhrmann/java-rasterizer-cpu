@@ -64,6 +64,10 @@ public class Point3 {
         return new Point3((float)(this.x / length), (float)(this.y / length), (float)(this.z / length));
     }
 
+    public float getDot(Point3 p) {
+        return (this.x * p.getX()) + (this.y * p.getY()) + (this.z * p.getZ());
+    }
+
     public Point3 clone() {
         return new Point3(this.x, this.y, this.z);
     }

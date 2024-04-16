@@ -1,17 +1,19 @@
 package RenderingComponents;
 
-import java.awt.Color;
-
 public class Pixel {
 
     private int x;
     private int y;
-    private Color color;
+    private int r;
+    private int g;
+    private int b;
 
-    public Pixel(int x, int y, Color color) {
+    public Pixel(int x, int y, int r, int g, int b) {
         this.x = x;
         this.y = y;
-        this.color = color;
+        this.r = r;
+        this.g = g;
+        this.b = b;
     }
     
     public int getX() {
@@ -30,15 +32,31 @@ public class Pixel {
         this.y = y;
     }
 
-    public Color getColor() {
-        return this.color;
+    public int getR() {
+        return this.r;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setR(int r) {
+        this.r = r;
+    }
+
+    public int getG() {
+        return this.g;
+    }
+
+    public void setG(int g) {
+        this.g = g;
+    }
+
+    public int getB() {
+        return this.b;
+    }
+
+    public void setB(int b) {
+        this.b = b;
     }
 
     public String toString() {
-        return String.format("%s(%d,%d)", this.color, this.x, this.y);
+        return String.format("(%d,%d),(%d,%d,%d)", this.x, this.y, this.r, this.g, this.b);
     }
 }

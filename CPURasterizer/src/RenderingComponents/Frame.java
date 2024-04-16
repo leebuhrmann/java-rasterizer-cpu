@@ -59,7 +59,7 @@ private Panel panel;
     public void render(Model model) {
         this.model = model;
         center();
-        Timer timer = new Timer(1000, e -> {
+        Timer timer = new Timer(16, e -> {
             panel.setBuffer(prepareBuffer());
             panel.repaint();
             this.tick++;
@@ -100,6 +100,7 @@ private Panel panel;
                 points.add(one);
                 points.add(two);
                 points.add(three);
+
                 if (perspective) {
                     float _bw = this.getWidth() / 2;
                     for (Point3 p : points) {
@@ -130,8 +131,6 @@ private Panel panel;
                 buffer.addAll(new Edge(two,three).getPixels());
                 buffer.addAll(new Edge(three,one).getPixels());
 
-
-                // add color to faces
                 if (color) {
                     int minY = buffer.stream()
                                         .min(Comparator.comparing(Pixel::getY))
@@ -158,7 +157,27 @@ private Panel panel;
                                             .getX();     
                                             
                         for (int x = minX; x < maxX; x++) {
-                            buffer.add(new Pixel(x,y,Color.BLUE));
+                            Point3 toSun = new Point3(1,0,1).getNormalized();
+                            float diffuse = normal.getDot(toSun);
+                            diffuse = Math.max(0,diffuse);
+                            int r = 255;
+                            int g = 255;
+                            int b = 255;
+
+                            r *= diffuse;
+                            g *= diffuse;
+                            b *= diffuse;
+
+                            int ambient = 50;
+                            r += ambient;
+                            g += ambient;
+                            b += ambient;
+
+                            r = Math.max(0, Math.min(255, r));
+                            g = Math.max(0, Math.min(255, g));
+                            b = Math.max(0, Math.min(255, b));
+
+                            buffer.add(new Pixel(x,y,r,g,b));
                         }
                     }
                 }

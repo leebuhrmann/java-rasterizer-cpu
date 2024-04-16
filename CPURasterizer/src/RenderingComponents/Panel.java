@@ -2,6 +2,7 @@ package RenderingComponents;
 import javax.swing.JPanel;
 
 import java.awt.Graphics;
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Panel extends JPanel {
@@ -27,7 +28,8 @@ public class Panel extends JPanel {
     private void drawPixel(Graphics g, Pixel pixel) {
         int x = pixel.getX();
         int y = pixel.getY();
-        g.setColor(pixel.getColor());
+        Color color = new Color(pixel.getR(), pixel.getG(), pixel.getB());
+        g.setColor(color);
         g.drawLine(x, y, x, y);
     }
 

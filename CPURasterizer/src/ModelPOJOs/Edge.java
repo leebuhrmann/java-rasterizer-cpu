@@ -60,7 +60,7 @@ public class Edge {
         int y = y0;
 
         for (int x  = x0; x <= x1; x++) {
-            pixels.add(new Pixel(x,y,0,0,0)); // TODO: pass color?
+            pixels.add(new Pixel(x,y,0,0,0));
             if (D > 0) {
                 y = y + yi;
                 D = D + (2 * (dy - dx));
@@ -87,7 +87,7 @@ public class Edge {
         int x = x0;
 
         for (int y = y0; y <= y1; y++) {
-            pixels.add(new Pixel(x,y,0,0,0)); // TODO: pass color?
+            pixels.add(new Pixel(x,y,0,0,0));
             if (D > 0) {
                 x = x + xi;
                 D = D + (2 * (dx - dy));

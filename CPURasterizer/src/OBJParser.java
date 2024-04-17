@@ -46,7 +46,6 @@ public class OBJParser {
                     fTuple[2] = Integer.parseInt(split[2]);
                     fData[i] = fTuple;
                 }
-                // System.out.printf("fData: [%d,%d,%d],[%d,%d,%d],[%d,%d,%d]\n", fData[0][0], fData[0][1], fData[0][2], fData[1][0], fData[1][1], fData[1][2], fData[2][0], fData[2][1], fData[2][2]);
                 f.add(fData);
             }
         }

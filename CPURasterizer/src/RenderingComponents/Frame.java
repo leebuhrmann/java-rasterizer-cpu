@@ -1,7 +1,7 @@
 package RenderingComponents;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -12,13 +12,14 @@ import ModelPOJOs.Model;
 import ModelPOJOs.Point3;
 import ModelPOJOs.Triangle;
 
+import java.util.Map;
+
 import javax.swing.JFrame;
 
 public class Frame extends JFrame{
     
 private Panel panel;
 
-    private ArrayList<Pixel> buffer;
     private Model model;
     private boolean animate;
     private boolean backFaceCulling;
@@ -33,7 +34,6 @@ private Panel panel;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.tick = 0;
-        this.buffer = null;
         this.model = null;
         this.animate = animate;
         this.backFaceCulling = backFaceCulling;
@@ -44,31 +44,23 @@ private Panel panel;
         add(panel);
     }
 
-    public void render(ArrayList<Pixel> buffer) {
-        panel.setBuffer(buffer);
-        panel.repaint();
+    public void render(Model model) {
+        this.model = model;
+        center();
+        Timer timer = new Timer(16, e -> {
+            ArrayList<Pixel> buffer = prepareBuffer();
+            panel.setBuffer(buffer);
+            panel.repaint();
+            this.tick++;
+        });
+        timer.start();
     }
 
-    // public void render(Model model) {
-    //     this.model = model;
-    //     center();
-    //     Timer timer = new Timer(16, e -> {
-    //         ArrayList<Pixel> buffer = prepareBuffer();
-    //         panel.setBuffer(buffer);
-    //         System.out.printf("\nbuffer: %s\n", buffer);
-    //         panel.repaint();
-    //         this.tick++;
-    //         // System.out.println("tick: " + tick);
-    //     });
-    //     timer.start();
-    // }
-
     private ArrayList<Pixel> prepareBuffer() {
-            System.out.println("\nprepareBuffer");
             ArrayList<Pixel> buffer = new ArrayList<>();
 
             for (Triangle t : this.model.getTriangles()) {
-                System.out.println("##################### Triangle ########################");
+                ArrayList<Pixel> tBuffer = new ArrayList<>();
                 Point3 one = t.getOne().clone();
                 Point3 two = t.getTwo().clone();
                 Point3 three = t.getThree().clone();
@@ -124,15 +116,13 @@ private Panel panel;
                     continue;
                 }
 
-                buffer.addAll(new Edge(one,two).getPixels());
-                buffer.addAll(new Edge(two,three).getPixels());
-                buffer.addAll(new Edge(three,one).getPixels());
+                tBuffer.addAll(new Edge(one,two).getPixels());
+                tBuffer.addAll(new Edge(two,three).getPixels());
+                tBuffer.addAll(new Edge(three,one).getPixels());
 
                 Point3 toSun = new Point3(1,0,1).getNormalized();
                 float diffuse = normal.getDot(toSun);
-                System.out.printf("diffuse1: %f\n", diffuse);
                 diffuse = Math.max(0,diffuse);
-                System.out.printf("diffuse2: %f\n", diffuse);
 
                 float r = 255;
                 float g = 255;
@@ -141,32 +131,29 @@ private Panel panel;
                 r *= diffuse;
                 g *= diffuse;
                 b *= diffuse;
-                System.out.printf("(r,g,b)1: (%f,%f,%f)\n", r,g,b);
 
                 int ambient = 50;
                 r += ambient;
                 g += ambient;
                 b += ambient;
-                System.out.printf("(r,g,b)2: (%f,%f,%f)\n", r,g,b);
 
                 r = Math.max(0, Math.min(255, r));
                 g = Math.max(0, Math.min(255, g));
                 b = Math.max(0, Math.min(255, b));
-                System.out.printf("(r,g,b)3: (%f,%f,%f)\n", r,g,b);
 
                 if (color) {
-                    int minY = buffer.stream()
+                    int minY = tBuffer.stream()
                                         .min(Comparator.comparing(Pixel::getY))
                                         .orElseThrow(NoSuchElementException::new)
                                         .getY();
-                    int maxY = buffer.stream()
+                    int maxY = tBuffer.stream()
                                         .max(Comparator.comparing(Pixel::getY))
                                         .orElseThrow(NoSuchElementException::new)
                                         .getY();
 
                     for (int y = minY; y <= maxY; y++) {
                         final int finalY = y;
-                        ArrayList<Pixel> _buffer = buffer.stream()
+                        ArrayList<Pixel> _buffer = tBuffer.stream()
                                                             .filter(pixel -> pixel.getY() == finalY)
                                                             .collect(Collectors.toCollection(ArrayList::new));
 
@@ -180,11 +167,12 @@ private Panel panel;
                                             .getX();     
                                             
                         for (int x = minX; x <= maxX; x++) {
-                            buffer.add(new Pixel(x,y,Math.round(r),Math.round(g),Math.round(b)));
+                            tBuffer.add(new Pixel(x,y,Math.round(r),Math.round(g),Math.round(b)));
                         }
                     }
                 }
                 //end add color
+                buffer.addAll(tBuffer);
             }
 
             return buffer;
@@ -207,5 +195,20 @@ private Panel panel;
         float _x2 = (float)Math.cos(_angle) * _r;
         float _y2 = (float)Math.sin(_angle) * _r;
         return new float[]{_x2 + _bw, _y2};
+    }
+
+    public void printColorCounts(ArrayList<Pixel> buffer) {
+        Map<String, Integer> colorCounts = new HashMap<>();
+
+        for (Pixel pixel : buffer) {
+            // Create a string representation of the color combination
+            String color = pixel.getR() + "," + pixel.getG() + "," + pixel.getB();
+            colorCounts.put(color, colorCounts.getOrDefault(color, 0) + 1);
+        }
+
+        // Print each color and its count
+        for (Map.Entry<String, Integer> entry : colorCounts.entrySet()) {
+            System.out.println("Color: " + entry.getKey() + ", Count: " + entry.getValue());
+        }
     }
 }

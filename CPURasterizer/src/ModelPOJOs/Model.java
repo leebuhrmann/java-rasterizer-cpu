@@ -60,6 +60,9 @@ public class Model {
         return this.t;
     }
 
+    /**
+     * Deprecated
+     */
     public ArrayList<Pixel> getPixels() {
         ArrayList<Pixel> pixels = new ArrayList<>();
         for (Triangle tri : this.t) {

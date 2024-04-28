@@ -120,13 +120,13 @@ private Panel panel;
                 tBuffer.addAll(new Edge(two,three).getPixels());
                 tBuffer.addAll(new Edge(three,one).getPixels());
 
-                Point3 toSun = new Point3(1,0,1).getNormalized();
+                Point3 toSun = new Point3(-1,1,1).getNormalized();
                 float diffuse = normal.getDot(toSun);
                 diffuse = Math.max(0,diffuse);
 
                 float r = 255;
-                float g = 255;
-                float b = 255;
+                float g = 122;
+                float b = 122;
 
                 r *= diffuse;
                 g *= diffuse;

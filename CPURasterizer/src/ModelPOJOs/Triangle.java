@@ -43,6 +43,9 @@ public class Triangle {
         return new Point3[]{one,two,three};
     }
 
+    /**
+     * Deprecated
+     */
     public ArrayList<Pixel> getPixels() {
         ArrayList<Pixel> pixels = new ArrayList<>();
         pixels.addAll(new Edge(one,two).getPixels());
